@@ -1,5 +1,5 @@
 {
-  "name": "vue-ctk-date-time-picker",
+  "name": "vbakalov/vue-ctk-date-time-picker",
   "version": "2.5.0",
   "description": "A vue component for select date & time (by Chronotruck)",
   "author": "Louis Mazel <loic.mazuel@chronotruck.com>",
@@ -85,10 +85,10 @@
     "timepicker"
   ],
   "license": "MIT",
-  "main": "dist/vue-ctk-date-time-picker.common.js",
+  "main": "dist/vbakalov/vue-ctk-date-time-picker.common.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/chronotruck/vue-ctk-date-time-picker.git"
+    "url": "git+https://github.com/MetalHead89/vue-ctk-date-time-picker.git"
   },
   "types": "dist/index.d.ts"
 }
