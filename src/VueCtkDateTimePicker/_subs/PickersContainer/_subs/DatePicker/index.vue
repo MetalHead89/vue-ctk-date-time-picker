@@ -33,12 +33,13 @@
         >
           <TransitionGroup
             :name="transitionLabelName"
-            class="h-100 flex align-center flex-1 flex justify-content-right"
+            tag="div"
+            class="label-wrapper"
           >
             <CustomButton
               v-for="m in [month]"
               :key="m.month"
-              class="date-buttons lm-fs-16 padding-button flex-1"
+              class="month-button date-buttons lm-fs-16 padding-button flex-1"
               :color="color"
               :dark="dark"
               @click="selectingYearMonth = 'month'"
@@ -46,14 +47,15 @@
               {{ monthFormatted }}
             </CustomButton>
           </TransitionGroup>
+
           <TransitionGroup
             :name="transitionLabelName"
-            class="h-100 flex align-center flex-1 flex"
+            class="label-wrapper"
           >
             <CustomButton
               v-for="y in [year]"
               :key="y"
-              class="date-buttons lm-fs-16 padding-button flex-1"
+              class="year-button date-buttons lm-fs-16 padding-button flex-1"
               :color="color"
               :dark="dark"
               @click="selectingYearMonth = 'year'"
@@ -190,7 +192,7 @@
     data () {
       return {
         transitionDaysName: 'slidenext',
-        transitionLabelName: 'slidevnext',
+        transitionLabelName: 'label-next',
         selectingYearMonth: null,
         isKeyboardActive: true
       }
@@ -301,7 +303,7 @@
       },
       changeMonth (val) {
         this.transitionDaysName = `slide${val}`
-        this.transitionLabelName = `slidev${val}`
+        this.transitionLabelName = `label-${val}`
         this.$emit('change-month', val)
       },
       selectYearMonth (event) {
@@ -309,7 +311,7 @@
         const isBefore = year === this.month.year
           ? month < this.month.month
           : year < this.month.year
-        this.transitionLabelName = isBefore ? `slidevprev` : `slidevnext`
+        this.transitionLabelName = isBefore ? `label-prev` : `label-next`
         this.selectingYearMonth = null
         this.$emit('change-year-month', event)
       }
@@ -365,6 +367,37 @@
         height: 56px;
         overflow: hidden;
       }
+
+      .label-wrapper {
+        height: 56px;
+        position: relative;
+        width: 50%;
+
+        .month-button,
+        .year-button {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+
+          // labels vertical animation
+          &.label-next-leave-active,
+          &.label-next-enter-active, &.label-prev-leave-active,
+          &.label-prev-enter-active {
+            position: absolute;
+            transition: all .3s;
+          }
+          &.label-next-enter, &.label-prev-leave-to {
+            top: 100%;
+            opacity: 0;
+          }
+          &.label-next-leave-to, &.label-prev-enter {
+            top: -100%;
+            opacity: 0;
+          }
+        }
+      }
+
       .date-buttons {
         text-transform: capitalize;
         font-weight: 400;
