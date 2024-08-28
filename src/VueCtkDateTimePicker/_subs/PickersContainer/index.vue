@@ -141,7 +141,8 @@
       customShortcuts: { type: Array, default: null },
       noKeyboard: { type: Boolean, default: false },
       right: { type: Boolean, default: false },
-      behaviour: { type: Object, default: () => ({}) }
+      behaviour: { type: Object, default: () => ({}) },
+      defaultDate: { type: String, default: null }
     },
     data () {
       return {
@@ -304,7 +305,8 @@
         } else if (this.value) {
           return new Month(moment(this.value, 'YYYY-MM-DD').month(), moment(this.value, 'YYYY-MM-DD').year(), this.locale)
         } else {
-          return new Month(moment().month(), moment().year(), this.locale)
+          const initialDate = this.defaultDate ? moment(this.defaultDate, 'YYYY-MM-DD') : moment()
+          return new Month(initialDate.month(), initialDate.year(), this.locale)
         }
       },
       changeMonth (val) {
