@@ -71,6 +71,7 @@
       :no-keyboard="noKeyboard"
       :right="right"
       :behaviour="_behaviour"
+      :default-date="defaultDate"
       @validate="validate"
       @close="closePicker"
     />
