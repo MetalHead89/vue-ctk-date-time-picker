@@ -4,25 +4,40 @@
     :class="{'dark': dark}"
   >
     <div class="year-month-selector__actions">
-      <div v-if="!this.isMonthMode" class="chang-years-section">
-        <v-b-arrow-button type="prev" @click="handlePrevYearsClick()" />
-        <v-b-arrow-button type="next" @click="handleNextYearsClick()" />
+      <div
+        v-if="!isMonthMode"
+        class="chang-years-section"
+      >
+        <VBArrowButton
+          type="prev"
+          @click="handlePrevYearsClick()"
+        />
+        <VBArrowButton
+          type="next"
+          @click="handleNextYearsClick()"
+        />
       </div>
 
       <CustomButton
         :color="dark ? '#757575' : '#424242'"
         :dark="dark"
         with-border
-        @click="$emit('back')"
         class="back-button"
+        @click="$emit('back')"
       >
         <span class="fs-16">
           ✕
         </span>
       </CustomButton>
     </div>
-    <TransitionGroup :name="transitionYearsName" tag="div">
-      <div :key="transitionKey" class="years-month-wrapper">
+    <TransitionGroup
+      :name="transitionYearsName"
+      tag="div"
+    >
+      <div
+        :key="transitionKey"
+        class="years-month-wrapper"
+      >
         <CustomButton
           v-for="(m, index) in months"
           :key="index"
@@ -121,13 +136,13 @@
         this.$emit('input', { month: this.currentMonth, year: year })
       },
 
-      handlePrevYearsClick() {
+      handlePrevYearsClick () {
         this.transitionYearsName = 'slideprev'
         this.getYears(this.years[0] - YEARS_ON_DISPLAY)
         this.transitionKey++
       },
 
-      handleNextYearsClick() {
+      handleNextYearsClick () {
         this.transitionYearsName = 'slidenext'
         this.getYears(this.years[this.years.length - 1] + 1)
         this.transitionKey++
