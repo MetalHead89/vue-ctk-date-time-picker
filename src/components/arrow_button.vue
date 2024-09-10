@@ -56,5 +56,10 @@
   cursor: pointer;
   width: 17px;
   height: 17px;
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: default;
+  }
 }
 </style>
