@@ -142,5 +142,14 @@
         height: 24px;
       }
     }
+
+    &:disabled {
+      pointer-events: none;
+      opacity: 0.7;
+
+      .custom-button-content {
+        color: gray !important;
+      }
+    }
   }
 </style>

@@ -10,10 +10,12 @@
       >
         <VBArrowButton
           type="prev"
+          :disabled="years[0] <= minYear"
           @click="handlePrevYearsClick()"
         />
         <VBArrowButton
           type="next"
+          :disabled="years[years.length - 1] >= maxYear"
           @click="handleNextYearsClick()"
         />
       </div>
@@ -50,18 +52,30 @@
         >
           {{ m }}
         </CustomButton>
-        <CustomButton
+
+        <template
           v-for="year in years"
-          :key="year"
-          :color="color"
-          :dark="dark"
-          :selected="currentYear === year"
-          with-border
-          class="year-button"
-          @click="selectYear(year)"
         >
-          {{ year }}
-        </CustomButton>
+          <CustomButton
+            v-if="year > 0"
+            :key="year"
+            :color="color"
+            :dark="dark"
+            :disabled="year < minYear || year > maxYear"
+            :selected="currentYear === year"
+            with-border
+            class="year-button"
+            @click="selectYear(year)"
+          >
+            {{ year }}
+          </CustomButton>
+
+          <div
+            v-else
+            :key="year"
+            class="year-button year-stub"
+          />
+        </template>
       </div>
     </TransitionGroup>
   </div>
@@ -73,6 +87,7 @@
   import VBArrowButton from '@/components/arrow_button'
 
   const YEARS_ON_DISPLAY = 15
+  const DEFAULT_MIN_YEAR = 1
 
   const ArrayRange = (start, end) => {
     return Array(end - start + 1).fill().map((_, idx) => {
@@ -92,12 +107,14 @@
       dark: { type: Boolean, default: null },
       color: { type: String, default: null },
       mode: { type: String, default: null },
-      month: { type: Object, default: null }
+      month: { type: Object, default: null },
+      minDate: { type: String, default: null },
+      maxDate: { type: String, default: null }
     },
     data () {
       return {
         months: null,
-        years: null,
+        years: [],
         transitionYearsName: 'slide-next',
         transitionKey: 0
       }
@@ -111,13 +128,19 @@
       },
       isMonthMode () {
         return this.mode === 'month'
+      },
+      minYear () {
+        return Number(this.minDate.split('-')[0] || DEFAULT_MIN_YEAR)
+      },
+      maxYear () {
+        return Number(this.maxDate.split('-')[0])
       }
     },
     mounted () {
       if (this.isMonthMode) {
         this.getMonths()
       } else {
-        this.getYears(this.month.year - Math.floor(YEARS_ON_DISPLAY / 2))
+        this.years = this.getYears(this.month.year - Math.floor(YEARS_ON_DISPLAY / 2))
       }
     },
     methods: {
@@ -127,7 +150,7 @@
       },
       getYears (startYear) {
         this.months = null
-        this.years = ArrayRange(startYear, startYear + YEARS_ON_DISPLAY - 1)
+        return ArrayRange(startYear, startYear + YEARS_ON_DISPLAY - 1)
       },
       selectMonth (monthNumber) {
         this.$emit('input', { month: monthNumber, year: this.currentYear })
@@ -138,13 +161,13 @@
 
       handlePrevYearsClick () {
         this.transitionYearsName = 'slideprev'
-        this.getYears(this.years[0] - YEARS_ON_DISPLAY)
+        this.years = this.getYears(this.years[0] - YEARS_ON_DISPLAY)
         this.transitionKey++
       },
 
       handleNextYearsClick () {
         this.transitionYearsName = 'slidenext'
-        this.getYears(this.years[this.years.length - 1] + 1)
+        this.years = this.getYears(this.years[this.years.length - 1] + 1)
         this.transitionKey++
       }
     }
@@ -203,6 +226,7 @@
       .month-button,
       .year-button {
         width: 30%;
+        height: 30px;
       }
     }
   }
