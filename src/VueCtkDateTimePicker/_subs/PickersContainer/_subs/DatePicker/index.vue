@@ -145,6 +145,8 @@
         :dark="dark"
         :mode="selectingYearMonth"
         :month="month"
+        :min-date="minDate"
+        :max-date="maxDate"
         @input="selectYearMonth"
         @back="selectingYearMonth = null"
       />
