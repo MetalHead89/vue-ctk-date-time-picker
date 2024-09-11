@@ -130,10 +130,10 @@
         return this.mode === 'month'
       },
       minYear () {
-        return Number(this.minDate.split('-')[0] || DEFAULT_MIN_YEAR)
+        return Number((this.minDate || '').split('-')[0] || DEFAULT_MIN_YEAR)
       },
       maxYear () {
-        return Number(this.maxDate.split('-')[0])
+        return Number((this.maxDate || '').split('-')[0])
       }
     },
     mounted () {
